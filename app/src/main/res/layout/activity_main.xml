@@ -6,13 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <TextView
+        android:id="@+id/txtCharName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="244dp"
+        android:text="My Character"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txtEnemyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:text="Enemy Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtCharName" />
+
+    <TextView
+        android:id="@+id/txtCharHP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Character HP"
+        app:layout_constraintStart_toStartOf="@+id/txtCharName"
+        app:layout_constraintTop_toBottomOf="@+id/txtCharName" />
+
+    <TextView
+        android:id="@+id/txtEnemyHP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Enemy HP"
+        app:layout_constraintEnd_toEndOf="@+id/txtEnemyName"
+        app:layout_constraintTop_toTopOf="@+id/txtCharHP" />
+
+    <TextView
+        android:id="@+id/txtCharMP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Character MP"
+        app:layout_constraintStart_toStartOf="@+id/txtCharHP"
+        app:layout_constraintTop_toBottomOf="@+id/txtCharHP" />
+
+    <TextView
+        android:id="@+id/txtEnemyMP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Enemy MP"
+        app:layout_constraintEnd_toEndOf="@+id/txtEnemyHP"
+        app:layout_constraintTop_toTopOf="@+id/txtCharMP" />
+
+    <Button
+        android:id="@+id/btnEndTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Turn"
+        app:layout_constraintEnd_toStartOf="@+id/txtEnemyName"
+        app:layout_constraintStart_toEndOf="@+id/txtCharName"
+        app:layout_constraintTop_toTopOf="@+id/txtCharName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
