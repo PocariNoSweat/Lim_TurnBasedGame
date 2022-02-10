@@ -25,12 +25,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int heroMP = 500;
     int heroMinDamage = 80;
     int heroMaxDamage = 150;
+    int critMinDamage = 300;
+    int critMaxDamage = 500;
 
     //Enemy Stats
     String EnemyName = "Midget Slayer";
-    int enemyHP = 2000;
+    int enemyHP = 2500;
     int enemyMP = 200;
-    int enemyMinDamage = 20;
+    int enemyMinDamage = 30;
     int enemyMaxDamage = 50;
     //Game Turn
     int turnNumber = 1;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player = MediaPlayer.create(this, R.raw.battlemusic);
 
         player.setLooping(true);
-        player.setVolume(100,100);
+        player.setVolume(100, 100);
         player.start();
 
         //XML ids for text and button
@@ -95,11 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Random randomizer = new Random();
         int herodps = randomizer.nextInt(heroMaxDamage - heroMinDamage) + heroMinDamage;
         int enemydps = randomizer.nextInt(enemyMaxDamage - enemyMinDamage) + enemyMinDamage;
+        int critdamage = randomizer.nextInt(critMaxDamage - critMinDamage) + critMinDamage;
 
-        int critchance = randomizer.nextInt(6);
-
-        if (critchance == 1) {
-            //critical attack here
+        int critchance = randomizer.nextInt(8);
+        {
         }
 
         if (turnNumber % 2 != 1) {
@@ -146,19 +147,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (turnNumber % 2 == 1) { //odd
                     enemyHP = enemyHP - herodps;
                     turnNumber++;
-                    btnEndTurn.setText("End Turn (" +String.valueOf(turnNumber)+")");
+                    btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
                     txtEnemyHP.setText(String.valueOf(enemyHP));
 
                     txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(herodps) + " to " + String.valueOf(EnemyName) + "!");
                     statuscounter--;
 
-                    if (enemyHP < 0) {
-                        txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
-                        heroHP = 1000;
-                        enemyHP = 2000;
-                        turnNumber = 1;
-                        btnEndTurn.setText("Next Game");
-                    }
+
+                if (enemyHP < 0) {
+                    txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
+                    heroHP = 1000;
+                    enemyHP = 2000;
+                    turnNumber = 1;
+                    btnEndTurn.setText("Next Game");
+
+                }
                     if (statuscounter > 0) {
                         ;//if the enemy is still stunned, reduce the stun for 1 turn
                         statuscounter--;
@@ -177,16 +180,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             disabledstatus = false;
                         }
 
-                    } else {
+                    }
+                    else {
                         heroHP = heroHP - enemydps;
                         turnNumber++;
-                        btnEndTurn.setText("End Turn (" +String.valueOf(turnNumber)+")");
+                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
                         txtCharHP.setText(String.valueOf(heroHP));
-
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemydps) + " to " + String.valueOf(CharName) + "!");
+                        statuscounter--;
+
 
                         if (heroHP < 0) {
-                            txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(CharName) + "! Game over.");
+                            txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
                             heroHP = 1000;
                             enemyHP = 2000;
                             turnNumber = 1;
