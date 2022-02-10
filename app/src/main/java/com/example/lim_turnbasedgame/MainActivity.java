@@ -2,6 +2,7 @@ package com.example.lim_turnbasedgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtCharName, txtEnemyName, txtCharHP, txtEnemyHP, txtCharMP, txtEnemyMP, txtHerodps, txtEnemydps, txtCombatLog;
     Button btnEndTurn;
     ImageButton skill1, skill2, skill3;
+    MediaPlayer player;
 
     //Hero Stats
     String CharName = "Aleg";
@@ -42,6 +44,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         enableFullscreen();
         setContentView(R.layout.activity_main);
+
+        //New music
+        player = MediaPlayer.create(this, R.raw.battlemusic);
+
+        player.setLooping(true);
+        player.setVolume(100,100);
+        player.start();
+
         //XML ids for text and button
         txtCharName = findViewById(R.id.txtCharName);
         txtEnemyName = findViewById(R.id.txtEnemyName);
@@ -136,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (turnNumber % 2 == 1) { //odd
                     enemyHP = enemyHP - herodps;
                     turnNumber++;
+                    btnEndTurn.setText("End Turn (" +String.valueOf(turnNumber)+")");
                     txtEnemyHP.setText(String.valueOf(enemyHP));
 
                     txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(herodps) + " to " + String.valueOf(EnemyName) + "!");
@@ -169,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         heroHP = heroHP - enemydps;
                         turnNumber++;
+                        btnEndTurn.setText("End Turn (" +String.valueOf(turnNumber)+")");
                         txtCharHP.setText(String.valueOf(heroHP));
 
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemydps) + " to " + String.valueOf(CharName) + "!");

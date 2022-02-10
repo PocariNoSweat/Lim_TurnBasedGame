@@ -30,7 +30,10 @@ public class Intro_screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Intro_screen.this, MainActivity.class);
+                player.stop();
                 startActivity(intent);
+
+
 
 
             }
