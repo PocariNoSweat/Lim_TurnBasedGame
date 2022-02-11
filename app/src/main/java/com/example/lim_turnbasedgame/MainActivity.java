@@ -181,15 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else if (turnNumber % 2 != 1) { //even
 
-                    if (disabledstatus == true) {
-                        txtCombatLog.setText("" + String.valueOf(EnemyName) + " is still stunned for " + String.valueOf(statuscounter) + " turns! ");
-                        statuscounter--;
-                        if (statuscounter == 0) {
-                            disabledstatus = false;
-                        }
-                    }
-
-
                     if (critchance == 1) {
                         heroHP = heroHP - enemycritdamage;
                         turnNumber++;
