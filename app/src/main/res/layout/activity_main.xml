@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Intro_screen">
 
 
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="End Turn"
+        app:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtCharName" />
 
@@ -22,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
         android:text="My Character"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,19 +37,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Enemy Name"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.975"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtCharMP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Character MP"
-        app:layout_constraintStart_toStartOf="@+id/txtCharHP"
-        app:layout_constraintTop_toBottomOf="@+id/txtCharHP" />
 
     <TextView
         android:id="@+id/txtCharHP"
@@ -53,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Character HP"
+        android:textColor="#D80000"
         app:layout_constraintStart_toStartOf="@+id/txtHerodps"
         app:layout_constraintTop_toBottomOf="@+id/txtHerodps" />
 
@@ -62,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Hero Damage"
+        android:textColor="#FF9A00"
         app:layout_constraintStart_toStartOf="@+id/txtCharName"
         app:layout_constraintTop_toBottomOf="@+id/txtCharName" />
 
@@ -71,17 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Enemy Damage"
+        android:textColor="#FF9A00"
         app:layout_constraintEnd_toEndOf="@+id/txtEnemyName"
         app:layout_constraintTop_toBottomOf="@+id/txtEnemyName" />
-
-    <TextView
-        android:id="@+id/txtEnemyMP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Enemy MP"
-        app:layout_constraintEnd_toEndOf="@+id/txtEnemyHP"
-        app:layout_constraintTop_toBottomOf="@+id/txtEnemyHP" />
 
     <TextView
         android:id="@+id/txtEnemyHP"
@@ -89,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Enemy HP"
+        android:textColor="#D80000"
         app:layout_constraintEnd_toEndOf="@+id/txtEnemydps"
         app:layout_constraintTop_toBottomOf="@+id/txtEnemydps" />
 
@@ -99,6 +91,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Combat Log"
+        android:textStyle="bold"
+        android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,9 +100,9 @@
         android:id="@+id/txtskill1mp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
+        android:layout_marginStart="228dp"
         android:layout_marginBottom="28dp"
-        android:text="10 MP"
+        android:text="Stun"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -116,8 +110,8 @@
         android:id="@+id/txtskill2mp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:text="25 MP"
+        android:layout_marginStart="76dp"
+        android:text="Passive"
         app:layout_constraintBottom_toBottomOf="@+id/txtskill1mp"
         app:layout_constraintStart_toEndOf="@+id/txtskill1mp" />
 
@@ -125,8 +119,8 @@
         android:id="@+id/txtskill3mp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:text="20 MP"
+        android:layout_marginStart="60dp"
+        android:text="Passive"
         app:layout_constraintBottom_toBottomOf="@+id/txtskill2mp"
         app:layout_constraintStart_toEndOf="@+id/txtskill2mp" />
 
@@ -167,8 +161,8 @@
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="460dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="456dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/enemy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -176,8 +170,8 @@
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="128dp"
         android:src="@drawable/aleg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

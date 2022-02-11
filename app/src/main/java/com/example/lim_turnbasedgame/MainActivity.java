@@ -21,19 +21,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Hero Stats
     String CharName = "Aleg";
-    int heroHP = 1000;
-    int heroMP = 500;
+    int heroHP = 2000;
     int heroMinDamage = 80;
-    int heroMaxDamage = 150;
+    int heroMaxDamage = 200;
     int critMinDamage = 300;
     int critMaxDamage = 500;
 
     //Enemy Stats
     String EnemyName = "Midget Slayer";
-    int enemyHP = 2500;
-    int enemyMP = 200;
+    int enemyHP = 5000;
     int enemyMinDamage = 30;
     int enemyMaxDamage = 50;
+    int enemycritMinDamage = 100;
+    int enemycritMaxDamage = 150;
     //Game Turn
     int turnNumber = 1;
 
@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtEnemyName = findViewById(R.id.txtEnemyName);
         txtCharHP = findViewById(R.id.txtCharHP);
         txtEnemyHP = findViewById(R.id.txtEnemyHP);
-        txtCharMP = findViewById(R.id.txtCharMP);
-        txtEnemyMP = findViewById(R.id.txtEnemyMP);
         btnEndTurn = findViewById(R.id.btnEndTurn);
         txtHerodps = findViewById(R.id.txtHerodps);
         txtEnemydps = findViewById(R.id.txtEnemydps);
@@ -70,11 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         txtCharName.setText(CharName);
         txtCharHP.setText(String.valueOf(heroHP));
-        txtCharMP.setText(String.valueOf(heroMP));
 
         txtEnemyName.setText(EnemyName);
         txtEnemyHP.setText(String.valueOf(enemyHP));
-        txtEnemyMP.setText(String.valueOf(enemyMP));
 
         txtHerodps.setText(String.valueOf(heroMinDamage) + " ~ " + String.valueOf(heroMaxDamage));
         txtEnemydps.setText(String.valueOf(enemyMinDamage) + " ~ " + String.valueOf(enemyMaxDamage));
@@ -98,8 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int herodps = randomizer.nextInt(heroMaxDamage - heroMinDamage) + heroMinDamage;
         int enemydps = randomizer.nextInt(enemyMaxDamage - enemyMinDamage) + enemyMinDamage;
         int critdamage = randomizer.nextInt(critMaxDamage - critMinDamage) + critMinDamage;
+        int enemycritdamage = randomizer.nextInt(enemycritMaxDamage - enemycritMinDamage) + enemycritMinDamage;
+        int critchance = randomizer.nextInt(7);
 
-        int critchance = randomizer.nextInt(8);
         {
         }
 
@@ -132,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (enemyHP < 0) {
                     txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
-                    heroHP = 1000;
-                    enemyHP = 2000;
+                    heroHP = 2000;
+                    enemyHP = 5000;
                     turnNumber = 1;
                     btnEndTurn.setText("Next Game");
                 }
@@ -145,19 +142,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //
 
                 if (turnNumber % 2 == 1) { //odd
-                    enemyHP = enemyHP - herodps;
-                    turnNumber++;
-                    btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
-                    txtEnemyHP.setText(String.valueOf(enemyHP));
 
-                    txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(herodps) + " to " + String.valueOf(EnemyName) + "!");
-                    statuscounter--;
+                    if (critchance == 1) {
+                        enemyHP = enemyHP - critdamage;
+                        turnNumber++;
+                        txtEnemyHP.setText(String.valueOf(enemyHP));
+                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(critdamage) + " to " + String.valueOf(EnemyName) + ". A critical hit!");
+                    }
+                    else {
+                        enemyHP = enemyHP - herodps;
+                        turnNumber++;
+                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        txtEnemyHP.setText(String.valueOf(enemyHP));
+
+                        txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(herodps) + " to " + String.valueOf(EnemyName) + "!");
+                        statuscounter--;
+                    }
+
 
 
                 if (enemyHP < 0) {
                     txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
-                    heroHP = 1000;
-                    enemyHP = 2000;
+                    heroHP = 2000;
+                    enemyHP = 5000;
                     turnNumber = 1;
                     btnEndTurn.setText("Next Game");
 
@@ -179,8 +187,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (statuscounter == 0) {
                             disabledstatus = false;
                         }
-
                     }
+
+
+                    if (critchance == 1) {
+                        heroHP = heroHP - enemycritdamage;
+                        turnNumber++;
+                        txtCharHP.setText(String.valueOf(heroHP));
+                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemycritdamage) + " to " + String.valueOf(CharName) + ". A critical hit!");
+                    }
+
                     else {
                         heroHP = heroHP - enemydps;
                         turnNumber++;
@@ -188,12 +205,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         txtCharHP.setText(String.valueOf(heroHP));
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemydps) + " to " + String.valueOf(CharName) + "!");
                         statuscounter--;
+                    }
 
 
                         if (heroHP < 0) {
                             txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
-                            heroHP = 1000;
-                            enemyHP = 2000;
+                            heroHP = 2000;
+                            enemyHP = 5000;
                             turnNumber = 1;
                             btnEndTurn.setText("Next Game");
 
@@ -203,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 buttoncd--;
         }
-    }
     private void enableFullscreen() {
         View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
