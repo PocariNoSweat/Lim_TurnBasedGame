@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int enemyHP = 5000;
     int enemyMinDamage = 30;
     int enemyMaxDamage = 50;
-    int enemycritMinDamage = 100;
-    int enemycritMaxDamage = 150;
+    int enemycritMinDamage = 150;
+    int enemycritMaxDamage = 200;
     //Game Turn
     int turnNumber = 1;
 
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnskill1:
 
-                enemyHP = enemyHP - 100;
+                enemyHP = Math.max(0, enemyHP - 100);
                 turnNumber++;
                 txtEnemyHP.setText(String.valueOf(enemyHP));
 
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 disabledstatus = true;
                 statuscounter = 3;
 
-                if (enemyHP < 0) {
+                if (enemyHP == 0) {
                     txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
                     heroHP = 2000;
                     enemyHP = 5000;
@@ -144,14 +144,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (turnNumber % 2 == 1) { //odd
 
                     if (critchance == 1) {
-                        enemyHP = enemyHP - critdamage;
+                        enemyHP = Math.max(0, enemyHP - critdamage);
                         turnNumber++;
                         txtEnemyHP.setText(String.valueOf(enemyHP));
                         btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
                         txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(critdamage) + " to " + String.valueOf(EnemyName) + ". A critical hit!");
                     }
                     else {
-                        enemyHP = enemyHP - herodps;
+                        enemyHP = Math.max(0, enemyHP - herodps);
                         turnNumber++;
                         btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
                         txtEnemyHP.setText(String.valueOf(enemyHP));
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-                if (enemyHP < 0) {
+                if (enemyHP == 0) {
                     txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
                     heroHP = 2000;
                     enemyHP = 5000;
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (turnNumber % 2 != 1) { //even
 
                     if (critchance == 1) {
-                        heroHP = heroHP - enemycritdamage;
+                        heroHP = Math.max(0, heroHP - enemycritdamage);
                         turnNumber++;
                         txtCharHP.setText(String.valueOf(heroHP));
                         btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     else {
-                        heroHP = heroHP - enemydps;
+                        heroHP = Math.max(0, heroHP - enemydps);
                         turnNumber++;
                         btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
                         txtCharHP.setText(String.valueOf(heroHP));
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
 
-                        if (heroHP < 0) {
+                        if (heroHP == 0) {
                             txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
                             heroHP = 2000;
                             enemyHP = 5000;
