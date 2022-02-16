@@ -14,9 +14,9 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView txtCharName, txtEnemyName, txtCharHP, txtEnemyHP, txtCharMP, txtEnemyMP, txtHerodps, txtEnemydps, txtCombatLog;
+    TextView txtCharName, txtEnemyName, txtCharHP, txtEnemyHP, txtHerodps, txtEnemydps, txtCombatLog;
     Button btnEndTurn;
-    ImageButton skill1, skill2, skill3;
+    ImageButton skill2;
     MediaPlayer player;
 
     //Hero Stats
@@ -37,9 +37,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Game Turn
     int turnNumber = 1;
 
-    boolean disabledstatus = false;
+    boolean burnstatus = false;
     int statuscounter = 0;
     int buttoncd = 0;
+    int button2cd = 0;
+    int burncounter =0;
+    int prevdmgdealthero = 0;
+    int prevdmgdealtenemy = 0;
+    int burndamage = 30;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //New music
         player = MediaPlayer.create(this, R.raw.battlemusic);
-
         player.setLooping(true);
         player.setVolume(100, 100);
         player.start();
@@ -75,14 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtHerodps.setText(String.valueOf(heroMinDamage) + " ~ " + String.valueOf(heroMaxDamage));
         txtEnemydps.setText(String.valueOf(enemyMinDamage) + " ~ " + String.valueOf(enemyMaxDamage));
 
-        skill1 = findViewById(R.id.btnskill1);
         skill2 = findViewById(R.id.btnskill2);
-        skill3 = findViewById(R.id.btnskill3);
 
 
         //button onClick Listener
         btnEndTurn.setOnClickListener(this);
-        skill1.setOnClickListener(this);
+        skill2.setOnClickListener(this);
     }
 
 
@@ -100,32 +103,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
         }
 
-        if (turnNumber % 2 != 1) {
-            skill1.setEnabled(false);
-        } else if (turnNumber % 2 == 1) {
-            skill1.setEnabled(true);
+
+        if (turnNumber % 2 != 1) { // ENEMY TURN
+            skill2.setEnabled(false);
+        } else if (turnNumber % 2 == 1) { // HERO TURN
+            skill2.setEnabled(true);
+        }
+        if (button2cd > 0) {
+            skill2.setEnabled(false);
+            button2cd--;
+        } else if (button2cd == 0) {
+            skill2.setEnabled(true);
         }
 
-        if (buttoncd > 0) {
-            skill1.setEnabled(false);
-            buttoncd--;
-        } else if (buttoncd == 0) {
-            skill1.setEnabled(true);
-        }
 
 
         switch (v.getId()) {
-            case R.id.btnskill1:
+            case R.id.btnskill2:
 
-                enemyHP = Math.max(0, enemyHP - 100);
+                enemyHP = Math.max(0, enemyHP - 150);
                 turnNumber++;
                 txtEnemyHP.setText(String.valueOf(enemyHP));
 
+                txtCombatLog.setText("" + String.valueOf(CharName) + " used Burn! It dealt " + String.valueOf(150) + "! The enemy is burned for 5 turns.");
+                btnEndTurn.setText("Your Turn (" + String.valueOf(turnNumber)+ ")");
 
-                txtCombatLog.setText("" + String.valueOf(CharName) + " used Stun! It dealt " + String.valueOf(100) + "! The enemy is stunned for 2 turns.");
-
-                disabledstatus = true;
-                statuscounter = 3;
+                burnstatus = true;
+                burncounter = 4;
 
                 if (enemyHP == 0) {
                     txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
@@ -133,27 +137,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     enemyHP = 5000;
                     turnNumber = 1;
                     btnEndTurn.setText("Next Game");
+
                 }
-                buttoncd = 8;
-
-
+                button2cd = 12;
                 break;
+
+
+
             case R.id.btnEndTurn:
                 //
 
-                if (turnNumber % 2 == 1) { //odd
+                if (turnNumber % 2 == 1) { //odd HERO TURN
 
                     if (critchance == 1) {
                         enemyHP = Math.max(0, enemyHP - critdamage);
+                        prevdmgdealthero = critdamage;
                         turnNumber++;
                         txtEnemyHP.setText(String.valueOf(enemyHP));
-                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        btnEndTurn.setText("Enemy Turn (" + String.valueOf(turnNumber) + ")");
                         txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(critdamage) + " to " + String.valueOf(EnemyName) + ". A critical hit!");
-                    }
-                    else {
+                    } else {
                         enemyHP = Math.max(0, enemyHP - herodps);
+                        prevdmgdealthero = herodps;
                         turnNumber++;
-                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        btnEndTurn.setText("Enemy Turn (" + String.valueOf(turnNumber) + ")");
                         txtEnemyHP.setText(String.valueOf(enemyHP));
 
                         txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(herodps) + " to " + String.valueOf(EnemyName) + "!");
@@ -161,56 +168,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
 
+                    if (enemyHP == 0) {
+                        txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
+                        heroHP = 2000;
+                        enemyHP = 5000;
+                        turnNumber = 1;
+                        btnEndTurn.setText("Next Game");
+                    }
 
-                if (enemyHP == 0) {
-                    txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
-                    heroHP = 2000;
-                    enemyHP = 5000;
-                    turnNumber = 1;
-                    btnEndTurn.setText("Next Game");
+                    if (burncounter > 0) {
+                        //if the enemy is still burned, reduce 30 per turn
+                        enemyHP = (enemyHP - burndamage);
+                        txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(prevdmgdealthero) + " to " + String.valueOf(EnemyName) + "! The enemy is still burned! It dealt 30 damage.");
+                        burncounter--;
 
-                }
-                    if (statuscounter > 0) {
-                        ;//if the enemy is still stunned, reduce the stun for 1 turn
-                        statuscounter--;
-                        if (statuscounter == 0) {
-                            disabledstatus = false;
+                        if (burncounter == 0) {
+                            burnstatus = false;
+                            txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(prevdmgdealthero) + " to " + String.valueOf(EnemyName) +"The enemy is no longer burned.");
                         }
                     }
-                    buttoncd--;
 
-                } else if (turnNumber % 2 != 1) { //even
+                    buttoncd--;
+                    button2cd--;
+
+                } else if (turnNumber % 2 != 1) { //even ENEMY TURN
 
                     if (critchance == 1) {
                         heroHP = Math.max(0, heroHP - enemycritdamage);
+                        prevdmgdealtenemy = enemycritdamage;
                         turnNumber++;
                         txtCharHP.setText(String.valueOf(heroHP));
-                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        btnEndTurn.setText("Your Turn (" + String.valueOf(turnNumber) + ")");
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemycritdamage) + " to " + String.valueOf(CharName) + ". A critical hit!");
-                    }
-
-                    else {
+                    } else {
                         heroHP = Math.max(0, heroHP - enemydps);
+                        prevdmgdealtenemy = enemydps;
                         turnNumber++;
-                        btnEndTurn.setText("End Turn (" + String.valueOf(turnNumber) + ")");
+                        btnEndTurn.setText("Your Turn (" + String.valueOf(turnNumber) + ")");
                         txtCharHP.setText(String.valueOf(heroHP));
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemydps) + " to " + String.valueOf(CharName) + "!");
                         statuscounter--;
                     }
 
 
-                        if (heroHP == 0) {
-                            txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
-                            heroHP = 2000;
-                            enemyHP = 5000;
-                            turnNumber = 1;
-                            btnEndTurn.setText("Next Game");
+                    if (heroHP == 0) {
+                        txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
+                        heroHP = 2000;
+                        enemyHP = 5000;
+                        turnNumber = 1;
+                        btnEndTurn.setText("Next Game");
 
-                        }
+                    }
                         break;
                     }
                 }
                 buttoncd--;
+        button2cd--;
         }
     private void enableFullscreen() {
         View decorView = getWindow().getDecorView();
