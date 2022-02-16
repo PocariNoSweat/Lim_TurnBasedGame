@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         if (burncounter == 0) {
                             burnstatus = false;
-                            txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(prevdmgdealthero) + " to " + String.valueOf(EnemyName) +"The enemy is no longer burned.");
+                            txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(prevdmgdealthero) + " to " + String.valueOf(EnemyName) +"! The enemy is no longer burned.");
                         }
                     }
 
