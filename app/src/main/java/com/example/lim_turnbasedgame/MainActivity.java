@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     boolean burnstatus = false;
     int statuscounter = 0;
-    int buttoncd = 0;
     int button2cd = 0;
     int burncounter =0;
     int prevdmgdealthero = 0;
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //button onClick Listener
         btnEndTurn.setOnClickListener(this);
         skill2.setOnClickListener(this);
+
     }
 
 
@@ -100,27 +100,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int enemycritdamage = randomizer.nextInt(enemycritMaxDamage - enemycritMinDamage) + enemycritMinDamage;
         int critchance = randomizer.nextInt(7);
 
-        {
-        }
 
-
-        if (turnNumber % 2 != 1) { // ENEMY TURN
-            skill2.setEnabled(false);
-        } else if (turnNumber % 2 == 1) { // HERO TURN
-            skill2.setEnabled(true);
-        }
-        if (button2cd > 0) {
-            skill2.setEnabled(false);
-            button2cd--;
-        } else if (button2cd == 0) {
-            skill2.setEnabled(true);
-        }
-
-
+            if (turnNumber % 2 != 1) { // ENEMY TURN
+                skill2.setEnabled(false);
+            }
+            if (button2cd > 0) {
+                skill2.setEnabled(false);
+                button2cd--;
+            } else if (button2cd == 0) {
+                skill2.setEnabled(true);
+            }
 
         switch (v.getId()) {
             case R.id.btnskill2:
-
                 enemyHP = Math.max(0, enemyHP - 150);
                 turnNumber++;
                 txtEnemyHP.setText(String.valueOf(enemyHP));
@@ -137,16 +129,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     enemyHP = 5000;
                     turnNumber = 1;
                     btnEndTurn.setText("Next Game");
-
                 }
                 button2cd = 12;
                 break;
 
-
-
             case R.id.btnEndTurn:
-                //
-
                 if (turnNumber % 2 == 1) { //odd HERO TURN
 
                     if (critchance == 1) {
@@ -167,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         statuscounter--;
                     }
 
-
                     if (enemyHP == 0) {
                         txtCombatLog.setText("" + String.valueOf(CharName) + " killed " + String.valueOf(EnemyName) + "! You win.");
                         heroHP = 2000;
@@ -187,10 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             txtCombatLog.setText("" + String.valueOf(CharName) + " dealt " + String.valueOf(prevdmgdealthero) + " to " + String.valueOf(EnemyName) +"! The enemy is no longer burned.");
                         }
                     }
-
-                    buttoncd--;
-                    button2cd--;
-
                 } else if (turnNumber % 2 != 1) { //even ENEMY TURN
 
                     if (critchance == 1) {
@@ -209,21 +191,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " dealt " + String.valueOf(enemydps) + " to " + String.valueOf(CharName) + "!");
                         statuscounter--;
                     }
-
-
                     if (heroHP == 0) {
                         txtCombatLog.setText("" + String.valueOf(EnemyName) + " killed " + String.valueOf(CharName) + "! Game over.");
                         heroHP = 2000;
                         enemyHP = 5000;
                         turnNumber = 1;
                         btnEndTurn.setText("Next Game");
-
                     }
                         break;
                     }
                 }
-                buttoncd--;
-        button2cd--;
         }
     private void enableFullscreen() {
         View decorView = getWindow().getDecorView();

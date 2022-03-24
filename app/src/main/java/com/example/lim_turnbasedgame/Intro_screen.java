@@ -38,6 +38,7 @@ public class Intro_screen extends AppCompatActivity {
 
             }
 
+
             private void enableFullscreen() {
                 View decorView = getWindow().getDecorView();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
